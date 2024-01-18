@@ -1,0 +1,178 @@
+// 1, moveZeroes
+var moveZeroes = function (nums) {
+  let currentIndex = 0;
+
+  for (let i = 0; i < nums.length; i++) {
+    if (nums[i] !== 0) {
+      let t = nums[i];
+      nums[i] = nums[currentIndex];
+      nums[currentIndex] = t;
+
+      currentIndex++;
+    }
+  }
+
+  return nums;
+};
+
+console.log(moveZeroes([0, 1, 0, 3, 12]));
+
+// 2, findTheDifference
+var findTheDifference = function (s, t) {
+  const charCount = {};
+
+  for (let i = 0; i < t.length; i++) {
+    charCount[t[i]] = (charCount[t[i]] || 0) + 1;
+  }
+
+  for (let j = 0; j < s.length; j++) {
+    charCount[s[j]] = charCount[s[j]] - 1;
+    if (charCount[s[j]] === 0) delete charCount[s[j]];
+  }
+
+  for (let char in charCount) {
+    return char;
+  }
+
+  return "";
+};
+
+console.log(findTheDifference("abc", "abcc"));
+
+//  557. Reverse Words in a String III
+var reverseWords = function (s) {
+  if (!s || s.length === 0) return "";
+  let strArr = s.split(" ");
+  const len = strArr.length;
+
+  for (let i = 0; i < len; i++) {
+    strArr[i] = reverseString(strArr[i]);
+  }
+
+  return strArr.join(" ");
+};
+
+function reverseString(str) {
+  if (!str || str.length === 0) return "";
+  let newStr = "";
+  const len = str.length;
+
+  for (let i = 0; i < len; i++) {
+    newStr = str[i] + newStr;
+  }
+
+  return newStr;
+}
+
+console.log(reverseWords("Let's take LeetCode contest"));
+
+// 1295. Find Numbers with Even Number of Digits
+var findNumbers = function (nums) {
+  if (!Array.isArray(nums) || nums.length === 0) return 0;
+  let count = 0;
+  const len = nums.length;
+
+  for (let i = 0; i < len; i++) {
+    let numLength = 0;
+    let remaning = nums[i];
+
+    while (remaning > 0) {
+      remaning = Math.floor(remaning / 10);
+      numLength++;
+    }
+
+    if (isEven(numLength)) count++;
+  }
+
+  return count;
+};
+
+console.log(findNumbers([12, 345, 2, 6, 7896]));
+
+var kidsWithCandies = function (candies, extraCandies) {
+  const len = candies.length;
+  const max = findMax(candies);
+  const result = [];
+
+  for (let i = 0; i < len; i++) {
+    candies[i] += extraCandies;
+    candies[i] >= max ? (result[i] = true) : (result[i] = false);
+  }
+
+  return result;
+};
+
+kidsWithCandies([4, 2, 1, 1, 2], 1);
+
+// 1470. Shuffle the Array
+var shuffle = function (nums, n) {
+  let j = n;
+  const result = [];
+
+  for (let i = 0; i < n; i++) {
+    result.push(nums[i], nums[j]);
+    j++;
+  }
+  return result;
+};
+shuffle([1, 2, 3, 4, 4, 3, 2, 1], 4);
+
+// 1480. Running Sum of 1d Array
+var runningSum = function(nums) {
+  if (!Array.isArray(nums) || nums.length === 0) return [];
+
+  const len = nums.length
+  const result = []
+  let sum = 0
+
+  for(let i = 0; i < len; i++) {
+    sum += nums[i]
+
+    result[i] = sum
+  }
+
+  return result
+};
+runningSum([1,2,3,4])
+
+// 1512. Number of Good Pairs
+var numIdenticalPairs = function(nums) {
+  if(!Array.isArray(nums) || nums.length === 0) return 0
+  let count = 0;
+
+  for (let i = 0; i < nums.length; i++) {
+    for (let j = i + 1; j < nums.length; j++) {
+
+      if(nums[i] === nums[j]) count++
+    }
+  }
+
+  return count
+};
+numIdenticalPairs([1,1,1,1])
+
+// 1636. Sort Array by Increasing Frequency
+var frequencySort = function(nums) {
+  
+};
+
+/*===================utilities function=================*/
+//check even
+function isEven(num) {
+  if (typeof num !== "number" || !num) return false;
+  if (num % 2 === 0) return true;
+  return false;
+}
+
+// find max
+function findMax(nums) {
+  if (!Array.isArray(nums) || nums.length === 0) return -1;
+  const len = nums.length;
+  let max = nums[0];
+
+  for (let i = 0; i < len; i++) {
+    if (nums[i] > max) max = nums[i];
+  }
+
+  return max;
+}
