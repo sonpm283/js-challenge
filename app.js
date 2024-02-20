@@ -810,8 +810,28 @@ var isPalindrome = function (s) {
 
 // 2215. Find the Difference of Two Arrays - https://leetcode.com/problems/find-the-difference-of-two-arrays/description/
 var findDifference = function (nums1, nums2) {
-  
+  const distinctArr1 = []
+  const distinctArr2 = []
+
+
+  for(let i = 0; i < nums1.length; i++) {
+    if(!nums2.includes(nums1[i]) && !distinctArr1.includes(nums1[i])) {
+      distinctArr1.push(nums1[i])
+    }
+  }
+
+  for(let j = 0; j < nums2.length; i++) {
+    if(!nums1.includes(nums2[j]) && !distinctArr2.includes(nums2[j])) {
+      distinctArr2.push(nums2[j])
+    }
+  }
+
+
+  return [distinctArr1, distinctArr2]
 };
+
+
+console.log(findDifference([1,2,3], [2,4,6]));
 
 // Utilities
 //check even
