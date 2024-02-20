@@ -530,7 +530,7 @@ function validAnagrams(str1, str2) {
 // Hashtag Generator
 function generateHashtag(str) {
   // str.length === 0 -> false
-  if (str.length === 0) return false;
+  if (str.length === 0 || str.trim() === "") return false;
   let hashtagArr = str.trim().split(" ");
 
   let result = hashtagArr.map((word) => {
@@ -547,8 +547,63 @@ function generateHashtag(str) {
   return hashtag.length < 140 ? hashtag : false;
 }
 
-console.log(generateHashtag("hello world"));
+// Hashtag Generator v2
+function generateHashtag(str) {
+  if (str.trim() === "") {
+    return false;
+  }
 
+  const words = str.trim().split(/\s+/);
+  const capitalizedWords = words.map(
+    (word) => word.charAt(0).toUpperCase() + word.slice(1)
+  );
+
+  const hashtag = "#" + capitalizedWords.join("");
+
+  if (hashtag.length > 140) {
+    return false;
+  }
+
+  return hashtag;
+}
+
+// Palindrome
+function isPalindrome(str) {
+  const formattedStr = removeNonAlphanumeric(str.toLowerCase());
+  formattedStr;
+  const reversedStr = reverseString(formattedStr);
+  reversedStr;
+  return formattedStr === reversedStr;
+}
+
+function removeNonAlphanumeric(str) {
+  let formattedStr = "";
+  for (let i = 0; i < str.length; i++) {
+    const char = str[i];
+    if (isAlphaNumeric(char)) {
+      formattedStr += char;
+    }
+  }
+  return formattedStr;
+}
+
+function isAlphaNumeric(char) {
+  const code = char.charCodeAt(0);
+  return (
+    (code >= 48 && code <= 57) || // Numbers 0-9
+    (code >= 97 && code <= 122) // Lowercase letters a-z
+  );
+}
+
+function reverseString(str) {
+  let reversed = "";
+  for (let i = str.length - 1; i >= 0; i--) {
+    reversed += str[i];
+  }
+  return reversed;
+}
+
+console.log(generateHashtag("son dep trai vd"));
 console.log(validAnagrams("apple", "banal"));
 console.log(highestScoringWord("take me to semynak"));
 console.log(calculateTotalSalesWithTax(products, 5.3));
@@ -559,6 +614,206 @@ console.log(findMissingLetter(["t", "u", "v", "w", "x", "z"]));
 console.log(displayLikes(["Alex", "Jacob", "Mark", "Max", "Jill"]));
 /*===================utilities function=================*/
 
+/*===========Two Pointers Technique================*/
+
+// Palindrome
+function isPalindrome(str) {
+  let i = 0;
+  let j = str.length - 1;
+
+  while (i < j) {
+    if (str[i] !== str[j]) {
+      return false;
+    }
+
+    i++;
+    j--;
+  }
+
+  return true;
+}
+console.log(isPalindrome("racecar"));
+
+// Binary search
+function binarySearch(arr, x) {
+  let left = 0;
+  let right = arr.length - 1;
+
+  while (left <= right) {
+    let mid = Math.floor((left + right) / 2);
+
+    if (arr[mid] === x) {
+      return mid;
+    } else if (arr[mid] < x) {
+      left = mid + 1;
+    } else {
+      right = mid - 1;
+    }
+  }
+
+  return -1;
+}
+console.log(binarySearch([1, 2, 3, 4, 5, 7, 8, 9], 9));
+/*
+//done..
+- https://leetcode.com/problems/reverse-string/description/
+- https://leetcode.com/problems/valid-anagram/description/
+- https://leetcode.com/problems/length-of-last-word/description/
+- https://leetcode.com/problems/merge-sorted-array/description/
+- https://leetcode.com/problems/is-subsequence/description/
+- https://leetcode.com/problems/isomorphic-strings/description/ *** hard
+- https://leetcode.com/problems/valid-palindrome/description/
+
+//doing...
+- https://leetcode.com/problems/find-the-difference-of-two-arrays/description/
+- https://leetcode.com/problems/remove-duplicates-from-sorted-array/description/
+- https://leetcode.com/problems/move-zeroes/description/
+*/
+
+// 344. Reverse String - https://leetcode.com/problems/reverse-string/description/
+var reverseString = function (s) {
+  let i = 0;
+  let j = s.length - 1;
+
+  while (i < j) {
+    let t = s[i];
+    s[i] = s[j];
+    s[j] = t;
+
+    i++;
+    j--;
+  }
+
+  return s;
+};
+
+// 242. Valid Anagram - https://leetcode.com/problems/valid-anagram/description/
+var isAnagram = function (s, t) {
+  if (s.length !== t.length) return false;
+  const freqOfS = {};
+
+  for (let i = 0; i < s.length; i++) {
+    const char = s[i];
+    freqOfS[char] = (freqOfS[char] || 0) + 1;
+  }
+
+  for (let j = 0; j < t.length; j++) {
+    const char = t[j];
+
+    if (!freqOfS[char]) return false;
+    freqOfS[char]--;
+    if (freqOfS[char] === 0) delete freqOfS[char];
+  }
+
+  return !Object.keys(freqOfS).length;
+};
+
+// 58. Length of Last Word - https://leetcode.com/problems/length-of-last-word/description/
+var lengthOfLastWord = function (s) {
+  if (s.length === 0) return 0;
+  const newStr = s.trim();
+  const lastIndexOfSpace = newStr.lastIndexOf(" ");
+
+  return newStr.slice(lastIndexOfSpace + 1).length;
+};
+
+// 88. Merge Sorted Array - https://leetcode.com/problems/merge-sorted-array/description/
+var merge = function (nums1, m, nums2, n) {
+  let i = m - 1;
+  let j = n - 1;
+  let k = m + n - 1;
+
+  while (j >= 0) {
+    if (i >= 0 && nums1[i] > nums2[j]) {
+      nums1[k] = nums1[i];
+      i--;
+    } else {
+      nums1[k] = nums2[j];
+      j--;
+    }
+
+    k--;
+  }
+};
+
+// 392. Is Subsequence - https://leetcode.com/problems/is-subsequence/description/
+var isSubsequence = function (s, t) {
+  let index = 0;
+  let checkSubsequence = "";
+
+  for (let i = 0; i < s.length; i++) {
+    if (!t.includes(s[i])) return false;
+
+    for (let j = index; j < t.length; j++) {
+      if (s[i] === t[j]) {
+        index = j + 1;
+        checkSubsequence += t[j];
+        break;
+      }
+    }
+  }
+
+  return checkSubsequence === s;
+};
+
+// 205. Isomorphic Strings - https://leetcode.com/problems/isomorphic-strings/description/
+var isIsomorphic = function (s, t) {
+  const freqS = {};
+  const freqT = {};
+
+  for (let i = 0; i < s.length; i++) {
+    console.log("S:", freqS);
+    console.log("T:", freqT);
+
+    console.log("==================");
+
+    console.log("Freq S", i, freqS[s[i]]);
+    console.log("==================");
+    console.log("Freq T", i, freqT[t[i]]);
+    console.log("==================");
+
+    if (freqS[s[i]] != freqT[t[i]]) return false;
+
+    freqS[s[i]] = i + 1;
+    freqT[t[i]] = i + 1;
+  }
+
+  return true;
+};
+
+// 125. Valid Palindrome - https://leetcode.com/problems/valid-palindrome/description/
+var isPalindrome = function (s) {
+  let result = [];
+  let strLowerCase = s.toLowerCase().trim();
+  let alphabet = "abcdefghijklmnopqrstuvwxyz0123456789";
+
+  for (let i = 0; i < strLowerCase.length; i++) {
+    const char = strLowerCase[i];
+    if (alphabet.includes(char)) result.push(char);
+  }
+
+  let i = 0;
+  let j = result.length - 1;
+  let compareStr = [...result];
+
+  while (i < j) {
+    const temp = result[i];
+    result[i] = result[j];
+    result[j] = temp;
+
+    i++;
+    j--;
+  }
+
+  return compareStr.join("") === result.join("");
+};
+
+// 2215. Find the Difference of Two Arrays - https://leetcode.com/problems/find-the-difference-of-two-arrays/description/
+var findDifference = function (nums1, nums2) {
+  
+};
+
+// Utilities
 //check even
 function isEven(num) {
   if (typeof num !== "number" || !num) return false;
@@ -583,4 +838,5 @@ function findMax(nums) {
 // Practice, Practice
 // Focus on your hands
 // Monkey cage
+// Must work well
 /*=====================*/
