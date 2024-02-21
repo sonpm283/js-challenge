@@ -663,8 +663,6 @@ console.log(binarySearch([1, 2, 3, 4, 5, 7, 8, 9], 9));
 - https://leetcode.com/problems/is-subsequence/description/
 - https://leetcode.com/problems/isomorphic-strings/description/ *** hard
 - https://leetcode.com/problems/valid-palindrome/description/
-
-//doing...
 - https://leetcode.com/problems/find-the-difference-of-two-arrays/description/
 - https://leetcode.com/problems/remove-duplicates-from-sorted-array/description/
 - https://leetcode.com/problems/move-zeroes/description/
@@ -810,26 +808,59 @@ var isPalindrome = function (s) {
 
 // 2215. Find the Difference of Two Arrays - https://leetcode.com/problems/find-the-difference-of-two-arrays/description/
 var findDifference = function (nums1, nums2) {
-  const distinctArr1 = []
-  const distinctArr2 = []
+  const distinctArr1 = [];
+  const distinctArr2 = [];
 
   for(let i = 0; i < nums1.length; i++) {
     if(!nums2.includes(nums1[i]) && !distinctArr1.includes(nums1[i])) {
-      distinctArr1.push(nums1[i])
+      distinctArr1.push(nums1[i]);
     }
   }
 
   for(let j = 0; j < nums2.length; j++) {
     if(!nums1.includes(nums2[j]) && !distinctArr2.includes(nums2[j])) {
-      distinctArr2.push(nums2[j])
+      distinctArr2.push(nums2[j]);
     }
   }
 
   return [distinctArr1, distinctArr2]
 };
 
+// 26. Remove Duplicates from Sorted Array - https://leetcode.com/problems/remove-duplicates-from-sorted-array/description/
+var removeDuplicates = function(nums) {
+  if(!Array.isArray(nums) || nums.length === 0) return 0;
+  let i = 0;
+  let j = 0;
 
-console.log(findDifference([1,2,3], [2,4,6]));
+  while(i < nums.length) {
+    if(nums[i] !== nums[j]) {
+      nums[j + 1] = nums[i];
+
+      j++;
+    }
+
+    i++;
+  }
+
+  return j + 1;
+};
+
+// 283. Move Zeroes - https://leetcode.com/problems/move-zeroes/description/
+var moveZeroes = function (nums) {
+  let currentIndex = 0;
+
+  for(let i = 0; i < nums.length; i++) {
+    if(nums[i] !== 0) {
+      let temp = nums[i];
+      nums[i] = nums[currentIndex];
+      nums[currentIndex] = temp;
+
+      currentIndex++;
+    }
+  }
+
+  return nums;
+};
 
 // Utilities
 //check even
